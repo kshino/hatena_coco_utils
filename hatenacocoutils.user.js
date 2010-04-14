@@ -3,7 +3,7 @@
 // @namespace      http://www.scrapcode.net/
 // @include        http://c.hatena.ne.jp/*
 // @include        http://n.hatena.ne.jp/*
-// @version        0.0.2
+// @version        0.0.3
 // ==/UserScript==
 (function( uWindow ) {
     // Select utility
@@ -13,6 +13,9 @@
 
         // ナビゲーション部の固定表示
         { name: 'fixedNavigation', args: {} },
+
+        // ナビゲーション部を拡張
+        { name: 'exNavigation', args: {} },
 
         // 表示幅の調整
         { name: 'setContainerWidth', args: { width: null, } },
@@ -149,6 +152,57 @@
             body.style.paddingBottom = '25px';
         },
     };
+
+    utils.exNavigation = {
+        initOnly: true,
+        func: function ( args ) {
+            var footer = $( 'footer' );
+
+            function appendFooterLink( emoji, url, title ) {
+                footer.appendChild( document.createTextNode( '　' ) );
+                footer.appendChild( createElement( 'img', {
+                        src: 'http://ugomemo.hatena.ne.jp/images/emoji/e-' + emoji + '.gif',
+                        alt: '[emoji:' + emoji + ']',
+                        width: 16,
+                        height: 16,
+                        class: 'emoji emoji-google',
+                } ) );
+                footer.appendChild( createElement( 'a', {
+                    href: url,
+                    innerHTML: title,
+                } ) );
+            }
+
+            appendFooterLink( '553', 'http://c.hatena.ne.jp/location', '地名イマココ' );
+
+            footer.appendChild( document.createTextNode( ' ' ) );
+            var form = createElement( 'form', {
+                action: 'http://n.hatena.ne.jp/search',
+                method: 'get',
+            }, {
+                display: 'inline',
+            } );
+
+            form.appendChild( createElement( 'input', {
+                type: 'text',
+                name: 'q',
+            }, {
+                width: '60px',
+            } ) );
+
+            form.appendChild( createElement( 'input', {
+                type: 'hidden',
+                name: 'location',
+            } ) );
+
+            form.appendChild( createElement( 'input', {
+                type: 'submit',
+                value: 'ユーザー検索',
+            } ) );
+
+            footer.appendChild( form );
+        },
+    }
 
     utils.setContainerWidth = {
         initOnly: true,
