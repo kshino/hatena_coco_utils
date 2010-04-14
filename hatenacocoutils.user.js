@@ -3,7 +3,7 @@
 // @namespace      http://www.scrapcode.net/
 // @include        http://c.hatena.ne.jp/*
 // @include        http://n.hatena.ne.jp/*
-// @version        0.0.1
+// @version        0.0.2
 // ==/UserScript==
 (function( uWindow ) {
     // Select utility
@@ -212,7 +212,14 @@
             for( var i = 0; i < usernames.length; ++i ) {
                 var a = usernames[i];
                 if( a.href && a.href.match( id_regexp ) ) {
-                    a.innerHTML += ' (id:' + RegExp.$1 + ')';
+                    var id   = RegExp.$1;
+                    var id2  = id.substr( 0, 2 );
+                    var icon = createElement( 'img', {
+                        src: 'http://www.st-hatena.com/users/' + id2 + '/' + id + '/profile_s.gif'
+                    } )
+                    a.appendChild( document.createTextNode( ' ' ) );
+                    a.appendChild( icon );
+                    a.innerHTML += ' (id:' + id + ')';
                 }
             }
         },
